@@ -1,7 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import "package:gql/language.dart" as lang;
-import "package:gql/ast.dart" as ast;
+import './models/Pokehub.dart';
 
 void main() => runApp(MyApp());
 
@@ -33,6 +34,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Pokehub pokehub;
   @override
   void initState() {
     super.initState();
@@ -40,33 +42,55 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final ast.DocumentNode doc = lang.parseString(
-      """
+    final String doc = '''
     {
       pokemons(first: 151) {
         name
+        image
       }
     }
-    """,
-    );
+    ''';
     return Scaffold(
       appBar: AppBar(
         title: Text("Pokedex App"),
         backgroundColor: Colors.cyan,
       ),
       body: Query(
-          options: QueryOptions(documentNode: doc),
+          options: QueryOptions(documentNode: gql(doc)),
           builder: (
             QueryResult result, {
             Refetch refetch,
             FetchMore fetchMore,
           }) {
-            return ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                return Text(result.data["pokemons"][index]["name"]);
-              },
-              itemCount: result.data["pokemons"].length,
-            );
+            pokehub = Pokehub.fromJson(result.data);
+            return GridView.count(
+                crossAxisCount: 2,
+                children: pokehub.pokemons
+                    .map((poke) => Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Card(
+                              elevation: 3.0,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Container(
+                                    height: 100.0,
+                                    width: 100.0,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(poke.image))),
+                                  ),
+                                  Text(
+                                    poke.name,
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              )),
+                        ))
+                    .toList());
           }),
     );
   }
