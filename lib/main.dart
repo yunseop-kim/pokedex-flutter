@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/PokemonDetail.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import './models/Pokehub.dart';
 
@@ -63,34 +62,50 @@ class _HomePageState extends State<HomePage> {
             FetchMore fetchMore,
           }) {
             pokehub = Pokehub.fromJson(result.data);
-            return GridView.count(
-                crossAxisCount: 2,
-                children: pokehub.pokemons
-                    .map((poke) => Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Card(
-                              elevation: 3.0,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Container(
-                                    height: 100.0,
-                                    width: 100.0,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: NetworkImage(poke.image))),
-                                  ),
-                                  Text(
-                                    poke.name,
-                                    style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              )),
-                        ))
-                    .toList());
+            return pokehub == null
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : GridView.count(
+                    crossAxisCount: 2,
+                    children: pokehub.pokemons
+                        .map((poke) => Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: InkWell(
+                                onTap: () {
+                                  print(poke.name);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PokemonDetail(
+                                                poke.name,
+                                              )));
+                                },
+                                child: Card(
+                                    elevation: 3.0,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        Container(
+                                          height: 100.0,
+                                          width: 100.0,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      poke.image))),
+                                        ),
+                                        Text(
+                                          poke.name,
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    )),
+                              ),
+                            ))
+                        .toList());
           }),
     );
   }
