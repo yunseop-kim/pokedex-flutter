@@ -73,7 +73,6 @@ class _HomePageState extends State<HomePage> {
                               padding: const EdgeInsets.all(2.0),
                               child: InkWell(
                                 onTap: () {
-                                  print(poke.name);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

@@ -83,7 +83,14 @@ class _PokemonDetailState extends State<PokemonDetail> {
                                   t.name,
                                   style: TextStyle(color: Colors.white),
                                 ),
-                                onSelected: (b) {}))
+                                onSelected: (b) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PokemonDetail(
+                                                t.name,
+                                              )));
+                                }))
                             .toList()
                         : [Text("This is the final stage of evolution.")],
                   ),
@@ -92,17 +99,14 @@ class _PokemonDetailState extends State<PokemonDetail> {
             ),
           ),
           Align(
-              alignment: Alignment.topCenter,
-              child: Hero(
-                  tag: pokemon.image,
-                  child: Container(
-                    height: 100.0,
-                    width: 100.0,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(pokemon.image))),
-                  )))
+            alignment: Alignment.topCenter,
+            child: Container(
+              height: 100.0,
+              width: 100.0,
+              decoration: BoxDecoration(
+                  image: DecorationImage(image: NetworkImage(pokemon.image))),
+            ),
+          )
         ],
       );
 
