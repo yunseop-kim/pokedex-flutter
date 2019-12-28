@@ -58,17 +58,24 @@ class _PokemonDetailState extends State<PokemonDetail> {
                     "Weakness",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: pokemon.weaknesses
-                        .map((t) => FilterChip(
-                            backgroundColor: Colors.red,
-                            label: Text(
-                              t,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onSelected: (b) {}))
-                        .toList(),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: pokemon.weaknesses
+                          .map((t) => Container(
+                                margin: const EdgeInsets.only(
+                                    left: 5.0, right: 5.0),
+                                child: FilterChip(
+                                    backgroundColor: Colors.red,
+                                    label: Text(
+                                      t,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onSelected: (b) {}),
+                              ))
+                          .toList(),
+                    ),
                   ),
                   Text(
                     "Next Evolution",
