@@ -102,8 +102,8 @@ class _PokemonDetailState extends State<PokemonDetail> {
           Align(
             alignment: Alignment.topCenter,
             child: Container(
-              height: 100.0,
-              width: 100.0,
+              height: 150.0,
+              width: 150.0,
               decoration: BoxDecoration(
                   image: DecorationImage(image: NetworkImage(pokemon.image))),
             ),
