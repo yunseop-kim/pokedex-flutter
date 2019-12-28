@@ -18,6 +18,7 @@ class _PokemonDetailState extends State<PokemonDetail> {
   Widget bodyWidget() => Stack(
         children: <Widget>[
           Positioned(
+            height: MediaQuery.of(context).size.height / 1.5,
             width: MediaQuery.of(context).size.width - 20,
             left: 10.0,
             top: MediaQuery.of(context).size.height * 0.1,
